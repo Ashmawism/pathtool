@@ -2,18 +2,8 @@ import clr
 from typing import Any, Union, Tuple
 
 clr.AddReference('ProtoGeometry')
-from Autodesk.DesignScript.Geometry import PolySurface
-from Autodesk.DesignScript.Geometry import Plane
-from Autodesk.DesignScript.Geometry import Vector
-from Autodesk.DesignScript.Geometry import Point
-from Autodesk.DesignScript.Geometry import PolyCurve
-from Autodesk.DesignScript.Geometry import Curve
-from Autodesk.DesignScript.Geometry import NurbsCurve
-from Autodesk.DesignScript.Geometry import BoundingBox
-from Autodesk.DesignScript.Geometry import Surface
-from Autodesk.DesignScript.Geometry import NurbsSurface
-from Autodesk.DesignScript.Geometry import Line
-from Autodesk.DesignScript.Geometry import Arc
+from Autodesk.DesignScript.Geometry import *
+
 import numpy as np
 import ifcopenshell as ifc
 
