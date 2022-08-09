@@ -5,7 +5,7 @@ clr.AddReference('ProtoGeometry')
 from Autodesk.DesignScript.Geometry import *
 
 import numpy as np
-import ifcopenshell as ifc
+#import ifcopenshell as ifc
 
 class Layer:
     """
@@ -436,7 +436,7 @@ class Layer:
         
         self.corners = curveT
 
-    def createIFCentity(self, fim: ifc.file, createAxis2Placement, GUID, lPlacement):
+    """def createIFCentity(self, fim: ifc.file, createAxis2Placement, GUID, lPlacement):
         o = self.origin
         ownerHistory = fim.by_id(5)
         context = fim.by_id(11)
@@ -465,11 +465,11 @@ class Layer:
         productShape = fim.createIfcProductDefinitionShape(None, None, [axisRepresentation, bodyRepresentation])
 
         return fim.createIfcBuildingElementProxy(GUID, ownerHistory, f"Layer_{self.count}", "a print layer", None, lPlacement, productShape, None, 'ELEMENT')
-
+    """
     def createPolyPath(self):
         self.polyPath = PolyCurve.ByJoinedCurves(self.path, 0.0005)
 
-    @staticmethod
+    """    @staticmethod
     def createIfcCurveSegment(fim, curve, createAxis2Placement, transition='CONTINUOUS'):
         sP = curve.StartPoint
         eP = curve.EndPoint
@@ -495,8 +495,8 @@ class Layer:
         CCsegment = fim.createIfcCompositeCurveSegment(transition, True, segment)
         
         return CCsegment
-
-
+    """
+    
     @staticmethod
     def lineAlternateEO(a: Point, b: Point, i: int) -> Line:
         if i%2:

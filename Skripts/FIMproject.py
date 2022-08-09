@@ -13,7 +13,7 @@ from Printer import Robot
 import FIMlayer
 importlib.reload(FIMlayer)
 from FIMlayer import Layer
-import ifcopenshell as ifc
+#import ifcopenshell as ifc
 
 
 import uuid
@@ -124,7 +124,7 @@ class Project:
         
         pass
 
-    def export2IFC(self, path):
+""" def export2IFC(self, path):
         if ".ifc" in path.lower():
             fim = ifc.open(path)
         else:
@@ -168,7 +168,7 @@ class Project:
         fim.write(path)
 
         return ifc.ifcopenshell_wrapper.schema_by_name("IFC4x2")
-    
+  
     @staticmethod
     def newGUID():
         return ifc.guid.compress(uuid.uuid1().hex)
@@ -182,7 +182,7 @@ class Project:
         application, application_version = "IfcOpenShell", "0.7"
         project_globalid, project_name = Project.newGUID(), "AM Wall"
 
-        temp = """ISO-10303-21;
+        temp = '''ISO-10303-21;
         HEADER;
         FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'2;1');
         FILE_NAME('%(filename)s','%(timestring)s',('%(creator)s'),('%(organization)s'),'%(application)s','%(application)s','');
@@ -211,7 +211,7 @@ class Project:
         #20=IFCPROJECT('%(project_globalid)s',#5,'%(project_name)s',$,$,$,$,(#11),#19);
         ENDSEC;
         END-ISO-10303-21;
-        """ % locals()
+        ''' % locals()
         
         #temp_handle, temp_filename = tempfile.mkstemp(suffix=".ifc", dir=path, text=True)
         with open(path + "\\" + filename, "w") as f:
@@ -232,3 +232,4 @@ class Project:
         axis2placement = Project.create_ifcaxis2placement(ifcfile,point,dir1,dir2)
         ifclocalplacement2 = ifcfile.createIfcLocalPlacement(relative_to,axis2placement)
         return ifclocalplacement2
+"""

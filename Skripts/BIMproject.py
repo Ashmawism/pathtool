@@ -47,8 +47,9 @@ class BIMdata:
     def extractWidth(self):
         for o in self.original:
             pars = o.Parameters
-            otyp = next(p.Value.Parameters for p in pars if p.Name == r'Typ')
-            width = next(iter([p.Value for p in otyp if p.Name == r'Breite']), 0)
+            print(pars)
+            otyp = next(p.Value.Parameters for p in pars if p.Name == r'Type')
+            width = next(iter([p.Value for p in otyp if p.Name == r'Width']), 0)
             self.width.append(width)
         
         if len(set(self.width)) == 1:
