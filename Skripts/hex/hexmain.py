@@ -22,6 +22,8 @@ def main():
     test2=polygon_corners(test1,a)
     test2
 
+    
+
     print(test2)
     points = []
 
@@ -29,6 +31,7 @@ def main():
 
     #plt.plot(test2)
     #plt.show()
+
 
 
 
