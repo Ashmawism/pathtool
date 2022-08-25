@@ -5,6 +5,7 @@ import math
 
 
 
+
 Point = collections.namedtuple("Point", ["x", "y"])
 
 
@@ -153,6 +154,7 @@ Layout = collections.namedtuple("Layout", ["orientation", "size", "origin"])
 
 layout_pointy = Orientation(math.sqrt(3.0), math.sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, math.sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5)
 layout_flat = Orientation(3.0 / 2.0, 0.0, math.sqrt(3.0) / 2.0, math.sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, math.sqrt(3.0) / 3.0, 0.0)
+
 def hex_to_pixel(layout, h):
     M = layout.orientation
     size = layout.size
@@ -182,6 +184,8 @@ def polygon_corners(layout, h):
     for i in range(0, 6):
         offset = hex_corner_offset(layout, i)
         corners.append(Point(center.x + offset.x, center.y + offset.y))
+    print('I am here')
+    print(corners)
     return corners
 
 
