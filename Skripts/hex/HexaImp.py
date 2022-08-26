@@ -4,8 +4,6 @@ import collections
 import math
 
 
-
-
 Point = collections.namedtuple("Point", ["x", "y"])
 
 
@@ -184,8 +182,6 @@ def polygon_corners(layout, h):
     for i in range(0, 6):
         offset = hex_corner_offset(layout, i)
         corners.append(Point(center.x + offset.x, center.y + offset.y))
-    print('I am here')
-    print(corners)
     return corners
 
 
