@@ -1,3 +1,4 @@
+# pyright: reportMissingImports=false
 import clr
 clr.AddReference('ProtoGeometry')
 from Autodesk.DesignScript.Geometry import PolySurface
@@ -49,12 +50,13 @@ class BIMdata:
             pars = o.Parameters
             otyp = next(p.Value.Parameters for p in pars if p.Name == r'Typ')
             width = next(iter([p.Value for p in otyp if p.Name == r'Breite']), 0)
+
             self.width.append(width)
         
         if len(set(self.width)) == 1:
             self.width = [self.width[0]]
     
-    def extractFaces(self):
+    def extractFaces(self, sides, owSides):
         polyS = PolySurface.BySolid(self.solid)
         faces = polyS.Explode()
         
@@ -65,21 +67,29 @@ class BIMdata:
             bottomZ = bb.MinPoint.Z
             obottomZ = self.bb.MinPoint.Z
             
-            if abs(bottomZ - obottomZ) < 0.0001 and abs(self.height - topZ) > 0.0001:
+            if abs(bottomZ - obottomZ) < 0.01 and abs(self.height - topZ) > 0.01:
                 self.bottom = f
-            elif abs(bottomZ - obottomZ) > 0.0001 and abs(self.height - topZ) < 0.0001:
+            elif abs(bottomZ - obottomZ) > 0.01 and abs(self.height - topZ) < 0.01:
                 self.top = f
             else:
                 self.cference.append(f)
-                per = f.PerimeterCurves()
-                
-                for c in per:
-                    side = self.isWidth(c.Length)
-                    
-                    if side:
-                        self.sides.append(f)
-                        break
-        
+                if owSides:
+                    for s in sides:
+                        p1 = f.PointAtParameter(0.5, 0.5)
+                        p2 = s.PointAtParameter(0.5, 0.5)
+                        side = p1.DistanceTo(p2) < 0.0001
+                        if side:
+                            self.sides.append(f)
+                            break
+                else:        
+                    per = f.PerimeterCurves()
+                    for c in per:
+                        side = self.isWidth(c.Length)
+                        
+                        if side:
+                            self.sides.append(f)
+                            break
+            
         perS = PolySurface.ByJoinedSurfaces(self.cference)
         self.offsets["0"] = perS
     
@@ -120,9 +130,8 @@ class BIMdata:
             for s in List.RestOfItems(offS):
                 oS = oS.Join(s)
             
-            vEdges = [e for e in oS.Edges if List.Count(e.AdjacentFaces) == 2]
-
             if R:
+                vEdges = [e for e in oS.Edges if List.Count(e.AdjacentFaces) == 2]
                 perSurfs = oS.Fillet(vEdges, R)
             else:
                 perSurfs = oS

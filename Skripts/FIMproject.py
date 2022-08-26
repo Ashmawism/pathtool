@@ -54,31 +54,29 @@ class Project:
         """
         self.active = False
         
-    def addRobot(self,robot):
-        self.printer.defineRobot(robot)
+    def showRobot(self):
+        return self.printer.rLCS
     
-    def prepareGeometry(self, inputGeo):
+    def addRobot(self,robot):
+        self.printer.defineRobot(robot, Project.unwrap)
+    
+    def prepareGeometry(self, inputGeo, sides, owSides, inside):
         self.bimdata = BIMdata(inputGeo, self.unwrap)
-        #todo: add failsafe
+        # [ ]: add failsafe
         self.bimdata.extractSolid()
         self.bimdata.extractWidth()
-        self.bimdata.extractFaces()
-        
-    def userDefinitions(self, usrInput):
-        self.bimdata.defineInsideOutside(usrInput)
+        self.bimdata.extractFaces(sides, owSides)
+        self.bimdata.defineInsideOutside(inside)
     
-    def addLayers(self, usrInput):
+    def addPattern(self, pat):
+        pat.getOffset = self.bimdata.getOffset
+        pat.unwrap = Project.unwrap
+        Layer.Pattern = pat
+
+    def addLayers(self, reduce, nol):
         Layer.unwrap = Project.unwrap
-        Layer.H = usrInput["LayerH"]
-        Layer.D = usrInput["NozzleD"]
-        Layer.R = usrInput["Radius"]
-        Layer.nop = usrInput["NoP"]
-        Layer.pattern = usrInput["Pattern"]
-        Layer.patternPar = usrInput["PatternPar"] # TODO: more options here
-        reduce = usrInput["reduce"]
-        
         if reduce:
-            n = usrInput["NoL"]
+            n = nol
         else:
             n = int(self.bimdata.height / Layer.H)
         
@@ -93,18 +91,11 @@ class Project:
             l.setPerimeter(surf, self.bimdata.sides)
             l.determineCurveSE()
     
-    def planOuterpath(self):
-        #perS, edges = self.bimdata.getOffset(Layer.D/2)
-        perSurfs = [self.bimdata.getOffset((n + 0.5)*Layer.D, Layer.R) for n in range(0,Layer.nop + 1)]
-        
+    def planPath(self):
         for l in self.layers:
-            for perS in perSurfs:
-                l.addPerimeter(perS)
-    
-    def continuePath(self):
-        for l in self.layers:
-            l.addPattern(self.bimdata.getOffset)
-    
+            l.planLayerPath()
+            l.polyPath = self.printer.transformPath(l.polyPath)
+
     def showPath(self) -> list:
         layers = []
         for l in self.layers:
@@ -161,8 +152,6 @@ class Project:
             ifcLayers.append(lentity)
 
         containerLayer = fim.createIfcRelAggregates(self.newGUID(), ownerHistory, "Layer Container", None, wall, ifcLayers)
-         
-        print(path)
         fim.write(path)
 
         return ifc.ifcopenshell_wrapper.schema_by_name("IFC4x2")
