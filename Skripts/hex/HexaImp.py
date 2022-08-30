@@ -31,9 +31,10 @@ def hex_rotate_right(a):
     return Hex(-a.r, -a.s, -a.q)
 
 hex_directions = [Hex(1, 0, -1), Hex(1, -1, 0), Hex(0, -1, 1), Hex(-1, 0, 1), Hex(-1, 1, 0), Hex(0, 1, -1)]
+#define the direction in which the new hex is added accorfing to the hex_directions array
 def hex_direction(direction):
     return hex_directions[direction]
-
+#adds a new hexagon from a reference hex
 def hex_neighbor(hex, direction):
     return hex_add(hex, hex_direction(direction))
 
@@ -77,7 +78,9 @@ def hex_linedraw(a, b):
     return results
 
 
+'''
 
+These functions use the offset and the doubled coordinates
 
 OffsetCoord = collections.namedtuple("OffsetCoord", ["col", "row"])
 
@@ -140,7 +143,7 @@ def rdoubled_to_cube(h):
     s = -q - r
     return Hex(q, r, s)
 
-
+'''
 
 
 Orientation = collections.namedtuple("Orientation", ["f0", "f1", "f2", "f3", "b0", "b1", "b2", "b3", "start_angle"])
