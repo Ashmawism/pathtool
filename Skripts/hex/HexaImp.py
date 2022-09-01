@@ -4,6 +4,25 @@ import collections
 import math
 
 
+
+
+# Classes to initialize the origins and the hex size 
+class Hexsize:
+    def __init__(self, x1,y1):
+        self.x = x1
+        self.y = y1
+        self.size = x1
+        #size of a hex is the distance from the center of the hex to each of the corners
+
+class Origin:
+    def __init__(self, x1,y1):
+        self.x = x1
+        self.y = y1
+        #The origin is the center point of the hexagonal grid
+
+
+
+
 Point = collections.namedtuple("Point", ["x", "y"])
 
 

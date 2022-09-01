@@ -3,47 +3,49 @@ from HexaImp import *
 import matplotlib.pyplot as plt
 import numpy as np
 
-class Hexsize:
-    def __init__(self, x1,y1):
-        self.x = x1
-        self.y = y1
 
-class Origin:
-    def __init__(self, x1,y1):
-        self.x = x1
-        self.y = y1
+def tuple_to_array(namedtuple,x_coord,y_coord):
+    
+    if not (x_coord and y_coord):  
+    
 
+        for i in range(int(np.size(namedtuple)/2)):
+            x = namedtuple[i].x
+            y = namedtuple[i].y
 
+            x_coord.append(x)
+            y_coord.append(y)
+
+        return 
+
+    else:
+        x_coord =[]
+        y_coord =[]
+        return tuple_to_array(namedtuple,x_coord,y_coord)
+     
 
 
 def main():
-
+    
+    
+    """
     Hex1= Hex(0,0,0)
-    Hex2 = Hex(0,1,-1)
+    Hex2 = Hex(1,-1,0)
+    Hex3 = Hex(0,-3,3)
     s = Hexsize(1,1)
     origin = Origin(0,0)
 
-    #h = math.sqrt(3) * 
-    
+    h = math.sqrt(3) * s.size
+#    newO = Origin(origin.x + (1.5*s.size) ,0.5*h)
     a = Layout(layout_flat,s,origin)
-    b = Layout(layout_flat,s, Origin(origin.x + (1.5*s.x) ,origin.y+s.y) )
-    
     test1=polygon_corners(a,Hex1)
-    test2 = polygon_corners(b,Hex2)
-    '''
-    print(test2[1])
-    print(test2[2])
-    print(test2[3])
-    print(test2[4])
-    print(test2[5])
-    print(test2[0])
-    '''
+    test2 = polygon_corners(a,Hex2)
+     
     x_coordinates = []
     y_coordinates = []
 
-    x1_coordinates = []
-    y1_coordinates = []
-    for i in list(range(6)):
+    
+    for i in range(int(np.size(test1)/2)):
         x2 = test2[i].x
         y2 = test2[i].y
         
@@ -53,26 +55,56 @@ def main():
         x_coordinates.append(x2)
         y_coordinates.append(y2)
         
-        x1_coordinates.append(x1)
-        y1_coordinates.append(y1)
-
-
-    x_coordinates.append(x_coordinates[0])
-    y_coordinates.append(y_coordinates[0])
-
-    x1_coordinates.append(x1_coordinates[0])
-    y1_coordinates.append(y1_coordinates[0])
+        x_coordinates.append(x1)
+        y_coordinates.append(y1)
 
 
 
-       #print ('the value of x is ',x2,' and the value of y is ', y2)
 
 
-#### Note - look how to convert the test2 output from Point to a np array where we can print
 
-    plt.plot(x_coordinates,y_coordinates)
-    plt.plot(x1_coordinates,y1_coordinates)
+    plt.plot(x_coordinates,y_coordinates,'ro')
+    #plt.plot(x1_coordinates,y1_coordinates)
     plt.show()
+
+
+
+    """
+
+    size = Hexsize(0.1,0.1)
+    origin = Origin(0,0)
+    layout = Layout(layout_flat,size,origin)
+    x_coord =[]
+    y_coord =[]
+    n = 0
+    for q in range(-100,100):
+        for r in range(-100,100):
+            for s in range(-100,100):
+                sum = q+r+s
+                if (sum) == 0:
+                    tempx =[]
+                    tempy =[] 
+                    
+                   # print(q,r,s)
+                    hex = Hex(q,r,s)
+                    points = polygon_corners(layout,hex) 
+                    tuple_to_array(points,tempx,tempy)
+
+                    x_coord = x_coord+tempx
+                    y_coord = y_coord +(tempy)
+
+                    
+                else:
+                    continue
+
+    
+   # print(x_coord)
+
+    plt.plot(x_coord,y_coord,'ro')
+    #plt.plot(x1_coordinates,y1_coordinates)
+    plt.show()
+
+
 
 
 
