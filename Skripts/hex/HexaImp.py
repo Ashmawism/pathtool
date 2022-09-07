@@ -5,6 +5,24 @@ import math
 
 
 
+
+# Classes to initialize the origins and the hex size 
+class Hexsize:
+    def __init__(self, x1,y1):
+        self.x = x1
+        self.y = y1
+        self.size = x1
+        #size of a hex is the distance from the center of the hex to each of the corners
+
+class Origin:
+    def __init__(self, x1,y1):
+        self.x = x1
+        self.y = y1
+        #The origin is the center point of the hexagonal grid
+
+
+
+
 Point = collections.namedtuple("Point", ["x", "y"])
 
 
@@ -32,9 +50,10 @@ def hex_rotate_right(a):
     return Hex(-a.r, -a.s, -a.q)
 
 hex_directions = [Hex(1, 0, -1), Hex(1, -1, 0), Hex(0, -1, 1), Hex(-1, 0, 1), Hex(-1, 1, 0), Hex(0, 1, -1)]
+#define the direction in which the new hex is added accorfing to the hex_directions array
 def hex_direction(direction):
     return hex_directions[direction]
-
+#adds a new hexagon from a reference hex
 def hex_neighbor(hex, direction):
     return hex_add(hex, hex_direction(direction))
 
@@ -78,7 +97,9 @@ def hex_linedraw(a, b):
     return results
 
 
+'''
 
+These functions use the offset and the doubled coordinates
 
 OffsetCoord = collections.namedtuple("OffsetCoord", ["col", "row"])
 
@@ -141,7 +162,7 @@ def rdoubled_to_cube(h):
     s = -q - r
     return Hex(q, r, s)
 
-
+'''
 
 
 Orientation = collections.namedtuple("Orientation", ["f0", "f1", "f2", "f3", "b0", "b1", "b2", "b3", "start_angle"])
@@ -153,6 +174,7 @@ Layout = collections.namedtuple("Layout", ["orientation", "size", "origin"])
 
 layout_pointy = Orientation(math.sqrt(3.0), math.sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, math.sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5)
 layout_flat = Orientation(3.0 / 2.0, 0.0, math.sqrt(3.0) / 2.0, math.sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, math.sqrt(3.0) / 3.0, 0.0)
+
 def hex_to_pixel(layout, h):
     M = layout.orientation
     size = layout.size
