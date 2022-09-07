@@ -76,29 +76,40 @@ def main():
     layout = Layout(layout_flat,size,origin)
     x_coord =[]
     y_coord =[]
+    q_ar =[]
+    r_ar =[]
+    s_ar =[]
     n = 0
-    for q in range(-100,100):
-        for r in range(-100,100):
-            for s in range(-100,100):
+    for q in range(-1,3):
+        for r in range(-1,1):
+            for s in range(-1,3):
                 sum = q+r+s
                 if (sum) == 0:
-                    tempx =[]
-                    tempy =[] 
-                    
-                   # print(q,r,s)
-                    hex = Hex(q,r,s)
-                    points = polygon_corners(layout,hex) 
-                    tuple_to_array(points,tempx,tempy)
+                    if (q == 0 or r == 0 or s == 0): 
+                        tempx =[]
+                        tempy =[] 
 
-                    x_coord = x_coord+tempx
-                    y_coord = y_coord +(tempy)
+                   #     print(q,r,s)
+                        hex = Hex(q,s,r)
+                        points = polygon_corners(layout,hex) 
+                        tuple_to_array(points,tempx,tempy)
 
+                        q_ar.append(q)
+                        r_ar.append(r)
+                        s_ar.append(s)
+
+
+                        x_coord = x_coord+tempx
+                        y_coord = y_coord +(tempy)
+
+                        plt.plot(x_coord,y_coord,'o')
+                        plt.show()
                     
                 else:
                     continue
 
     
-   # print(x_coord)
+    print('the values of th q array is ',q_ar,'the values of th s array is ',s_ar,'the values of th r array is ',r_ar,) 
 
     plt.plot(x_coord,y_coord,'ro')
     #plt.plot(x1_coordinates,y1_coordinates)
